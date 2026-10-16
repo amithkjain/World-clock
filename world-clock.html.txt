@@ -1,0 +1,390 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>World Clock and Calendar</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: #f4f7fb;
+        color: #1f2937;
+    }
+
+    .clock-container {
+        max-width: 850px;
+        margin: auto;
+    }
+
+    .clock-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #174a7e;
+        margin-bottom: 25px;
+    }
+
+    .section {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5eaf0;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #174a7e;
+    }
+
+    select {
+        width: 100%;
+        padding: 13px;
+        font-size: 16px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #1f2937;
+        outline: none;
+    }
+
+    select:focus {
+        border-color: #2563eb;
+    }
+
+    .location-name {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        color: #174a7e;
+        margin-bottom: 12px;
+    }
+
+    .time {
+        text-align: center;
+        font-size: clamp(36px, 7vw, 56px);
+        font-weight: bold;
+        color: #0f766e;
+        letter-spacing: 2px;
+        margin: 15px 0;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .date {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .day {
+        text-align: center;
+        font-size: 18px;
+        color: #64748b;
+        margin-bottom: 15px;
+    }
+
+    .details {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .detail-box {
+        background: #f1f5f9;
+        border-radius: 10px;
+        padding: 16px 10px;
+        text-align: center;
+    }
+
+    .detail-label {
+        font-size: 13px;
+        color: #64748b;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .detail-value {
+        font-size: 18px;
+        font-weight: bold;
+        color: #174a7e;
+        overflow-wrap: anywhere;
+    }
+
+    .timezone {
+        text-align: center;
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 18px;
+    }
+
+    @media (max-width: 480px) {
+        body {
+            padding: 10px;
+        }
+
+        .section {
+            padding: 16px;
+        }
+
+        .clock-title {
+            font-size: 23px;
+        }
+
+        .date {
+            font-size: 18px;
+        }
+
+        .details {
+            gap: 8px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="clock-container">
+
+    <div class="clock-title">
+        🌍 World Clock & Calendar
+    </div>
+
+    <!-- SECTION 1: COUNTRY SELECTION -->
+    <div class="section">
+
+        <div class="section-title">
+            🌐 Select Country / City
+        </div>
+
+        <select id="countrySelect">
+            <option value="Asia/Kolkata">India</option>
+            <option value="America/New_York">United States – New York</option>
+            <option value="America/Los_Angeles">United States – Los Angeles</option>
+            <option value="America/Chicago">United States – Chicago</option>
+            <option value="America/Toronto">Canada – Toronto</option>
+            <option value="America/Vancouver">Canada – Vancouver</option>
+            <option value="Europe/London">United Kingdom</option>
+            <option value="Europe/Paris">France</option>
+            <option value="Europe/Berlin">Germany</option>
+            <option value="Europe/Rome">Italy</option>
+            <option value="Europe/Madrid">Spain</option>
+            <option value="Europe/Moscow">Russia – Moscow</option>
+            <option value="Asia/Dubai">United Arab Emirates</option>
+            <option value="Asia/Riyadh">Saudi Arabia</option>
+            <option value="Asia/Karachi">Pakistan</option>
+            <option value="Asia/Dhaka">Bangladesh</option>
+            <option value="Asia/Kathmandu">Nepal</option>
+            <option value="Asia/Colombo">Sri Lanka</option>
+            <option value="Asia/Singapore">Singapore</option>
+            <option value="Asia/Kuala_Lumpur">Malaysia</option>
+            <option value="Asia/Bangkok">Thailand</option>
+            <option value="Asia/Jakarta">Indonesia – Jakarta</option>
+            <option value="Asia/Shanghai">China – Shanghai</option>
+            <option value="Asia/Hong_Kong">Hong Kong</option>
+            <option value="Asia/Tokyo">Japan</option>
+            <option value="Asia/Seoul">South Korea</option>
+            <option value="Asia/Riyadh">Saudi Arabia</option>
+            <option value="Australia/Sydney">Australia – Sydney</option>
+            <option value="Australia/Perth">Australia – Perth</option>
+            <option value="Pacific/Auckland">New Zealand</option>
+            <option value="Africa/Johannesburg">South Africa</option>
+            <option value="Africa/Nairobi">Kenya</option>
+            <option value="Africa/Cairo">Egypt</option>
+            <option value="America/Sao_Paulo">Brazil – São Paulo</option>
+            <option value="America/Argentina/Buenos_Aires">Argentina</option>
+            <option value="America/Mexico_City">Mexico – Mexico City</option>
+            <option value="UTC">UTC</option>
+        </select>
+
+    </div>
+
+    <!-- SECTION 2: DATE AND TIME DISPLAY -->
+    <div class="section">
+
+        <div class="section-title">
+            📅 Current Date & Time
+        </div>
+
+        <div class="location-name" id="locationName">
+            India
+        </div>
+
+        <div class="time" id="timeDisplay">
+            --:--:--
+        </div>
+
+        <div class="date" id="dateDisplay">
+            Loading date...
+        </div>
+
+        <div class="day" id="dayDisplay">
+            Loading day...
+        </div>
+
+        <div class="details">
+
+            <div class="detail-box">
+                <div class="detail-label">Day</div>
+                <div class="detail-value" id="dayValue">--</div>
+            </div>
+
+            <div class="detail-box">
+                <div class="detail-label">Month</div>
+                <div class="detail-value" id="monthValue">--</div>
+            </div>
+
+            <div class="detail-box">
+                <div class="detail-label">Date</div>
+                <div class="detail-value" id="dateValue">--</div>
+            </div>
+
+            <div class="detail-box">
+                <div class="detail-label">Year</div>
+                <div class="detail-value" id="yearValue">----</div>
+            </div>
+
+        </div>
+
+        <div class="timezone" id="timezoneDisplay">
+            Time zone: Asia/Kolkata
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const countrySelect = document.getElementById("countrySelect");
+
+    const locations = {
+        "Asia/Kolkata": "India",
+        "America/New_York": "United States – New York",
+        "America/Los_Angeles": "United States – Los Angeles",
+        "America/Chicago": "United States – Chicago",
+        "America/Toronto": "Canada – Toronto",
+        "America/Vancouver": "Canada – Vancouver",
+        "Europe/London": "United Kingdom",
+        "Europe/Paris": "France",
+        "Europe/Berlin": "Germany",
+        "Europe/Rome": "Italy",
+        "Europe/Madrid": "Spain",
+        "Europe/Moscow": "Russia – Moscow",
+        "Asia/Dubai": "United Arab Emirates",
+        "Asia/Riyadh": "Saudi Arabia",
+        "Asia/Karachi": "Pakistan",
+        "Asia/Dhaka": "Bangladesh",
+        "Asia/Kathmandu": "Nepal",
+        "Asia/Colombo": "Sri Lanka",
+        "Asia/Singapore": "Singapore",
+        "Asia/Kuala_Lumpur": "Malaysia",
+        "Asia/Bangkok": "Thailand",
+        "Asia/Jakarta": "Indonesia – Jakarta",
+        "Asia/Shanghai": "China – Shanghai",
+        "Asia/Hong_Kong": "Hong Kong",
+        "Asia/Tokyo": "Japan",
+        "Asia/Seoul": "South Korea",
+        "Australia/Sydney": "Australia – Sydney",
+        "Australia/Perth": "Australia – Perth",
+        "Pacific/Auckland": "New Zealand",
+        "Africa/Johannesburg": "South Africa",
+        "Africa/Nairobi": "Kenya",
+        "Africa/Cairo": "Egypt",
+        "America/Sao_Paulo": "Brazil – São Paulo",
+        "America/Argentina/Buenos_Aires": "Argentina",
+        "America/Mexico_City": "Mexico – Mexico City",
+        "UTC": "UTC"
+    };
+
+    function updateClock() {
+        const timezone = countrySelect.value;
+        const now = new Date();
+
+        const timeOptions = {
+            timeZone: timezone,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true
+        };
+
+        const dateOptions = {
+            timeZone: timezone,
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        };
+
+        const dayOptions = {
+            timeZone: timezone,
+            weekday: "long"
+        };
+
+        const parts = new Intl.DateTimeFormat("en-GB", {
+            timeZone: timezone,
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        }).formatToParts(now);
+
+        const getPart = (type) =>
+            parts.find(part => part.type === type)?.value ?? "--";
+
+        document.getElementById("locationName").textContent =
+            locations[timezone] || timezone;
+
+        document.getElementById("timeDisplay").textContent =
+            new Intl.DateTimeFormat("en-US", timeOptions).format(now);
+
+        document.getElementById("dateDisplay").textContent =
+            new Intl.DateTimeFormat("en-GB", dateOptions).format(now);
+
+        document.getElementById("dayDisplay").textContent =
+            new Intl.DateTimeFormat("en-US", dayOptions).format(now);
+
+        document.getElementById("dayValue").textContent =
+            new Intl.DateTimeFormat("en-US", dayOptions).format(now);
+
+        document.getElementById("monthValue").textContent =
+            getPart("month");
+
+        document.getElementById("dateValue").textContent =
+            getPart("day");
+
+        document.getElementById("yearValue").textContent =
+            getPart("year");
+
+        const timezoneName = new Intl.DateTimeFormat("en-US", {
+            timeZone: timezone,
+            timeZoneName: "long"
+        }).formatToParts(now).find(part =>
+            part.type === "timeZoneName"
+        )?.value || timezone;
+
+        document.getElementById("timezoneDisplay").textContent =
+            "Time zone: " + timezoneName + " (" + timezone + ")";
+    }
+
+    countrySelect.addEventListener("change", updateClock);
+
+    updateClock();
+    setInterval(updateClock, 1000);
+</script>
+
+</body>
+</html>
+```
